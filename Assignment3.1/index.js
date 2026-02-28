@@ -16,9 +16,24 @@ const states = [
   { id: 10, name: "Jharkhand", population: 32988134, literacyRate: 66.41, annualBudget: 110000, gdp: 4500000 }
 ]
 
+app.use(express.json());
 
 app.get("/states", (req, res) => {
     res.status(200).json(states)
+});
+
+app.get("/states/highest-gdp", (req, res) => {
+  var max = -1
+  for(i of states){
+    if(i.gdp > max){
+      max = i.gdp
+       var index = states.indexOf(i)
+    }
+  }
+  if (index == -1) {
+    return res.status(404).json({ message: "state not found" });
+  }
+  res.status(200).json(states[index]);
 });
 
 
@@ -27,32 +42,12 @@ app.get("/states/:id", (req, res) => {
   const state = states.find(u => u.id == userId);
 
   if (!state) {
-    return res.status(404).json({ message: "User not found" });
+    return res.status(404).json({ message: "state not found" });
   }
 
   res.status(200).json(state);
 });
 
-
-app.get("/states/highest-gdp", (req, res) => {
-
-  var max = -1
-  for(i of states){
-    if(i.gdp > max){
-      max = i.gdp
-       var index = states.indexOf(i)
-    }
-  }
-
-  if (index == -1) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  res.status(200).json(states[index]);
-});
-
-
-app.use(express.json());
 
 app.post("/states", (req, res) => {
   const newState = {
