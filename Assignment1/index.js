@@ -77,19 +77,35 @@ const students = [
 
 
 app.get("/students", (req, res) => {
-    console.log(students)
   res.status(200).json(students);
 });
 
 
 app.get("/students/topper", (req, res) => {
   var max = 0;
+  var arr = []
   for(i of students){
+    arr.push(i.cgpa);
     if(i.cgpa > max){
         max = i.cgpa;
         var userid = i.id;
     }
   }
+
+  arr.sort((a,b) => b - a);
+  
+  // var ans = []
+  // for(i=0; i<3 ; i++){
+  //   var userid = arr[i];
+  //   const user = students.find(u => u.cgpa === userid);
+  //   ans.push(user);
+  // }
+  // res.status(200).json(ans);
+
+  //   if (!res) {
+  //     return res.status(404).json({ message: "Student not found" });
+  //   }
+  // }
 
   const user = students.find(u => u.id === userid);
 
@@ -98,6 +114,7 @@ app.get("/students/topper", (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "Student not found" });
   }
+
 });
 
 
